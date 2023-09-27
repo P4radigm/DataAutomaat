@@ -15,25 +15,17 @@ public class PrinterManager : MonoBehaviour
     public int maxCharsPerLine;
 
     public Texture2D logoType;
-    public Texture2D biebLogo;
-    public Texture2D hkuLogo;
+    public Texture2D leonLogo;
+    [SerializeField] private string[] takeHomeMessageLines;
 
     private Printer printer;
 
-    private StateManager stateManager;
+    [SerializeField] private StateManager stateManager;
+    [SerializeField] private SinglePageContentManager contentManager;
 
-    private float lastModuloYPos;
-
-    private void Start()
+    public void PrintReceipt()
     {
-        //PrintReceipt("0`1`2`3`4`5TestTest`6Test");
-        stateManager = StateManager.instance;
-    }
-
-    public void PrintReceipt(List<string> linesToPrint)
-    {
-     // printer.PrintText("12345678901234567890123456789012345678");
-
+        //Setup printer
         float printerYPos = printerStartPosition.y;
 
         printer = new Printer();
@@ -45,152 +37,153 @@ public class PrinterManager : MonoBehaviour
         printer.SetTextColor(Color.black);
 
         printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        //printer.PrintText("--------------------------------------");
+
+        //Print Creatief Talent Werkt Logo
+        printer.PrintText("                                        ");
         printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-
-
-        //Print OnTheLine Logo
-        printer.PrintTexture(logoType, 66f, 19.2f);
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printerYPos += 19.2f;
-
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
         printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
-        //print customer no
-        printer.SetTextFontSize(fontSize*2);
-        printer.PrintText($"No: {stateManager.currentBezoekerData.bezoekerID.ToString().PadLeft(6, '0')}");
-        printerYPos += lineHeight*2; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        //printer.PrintText("--------------------------------------");
-        printerYPos += lineHeight;
+        printer.PrintTexture(logoType, 70f, 35f);
+        printerYPos += 35f; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
         printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
-        printer.SetTextFontSize(fontSize);
-
-        //print bieb adres + U krijgt U geeft
-        printer.PrintText("--------------------------------------");
+        printer.PrintText("                                        ");
         printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("          Bibliotheek Utrecht         ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("             Locatie Neude            ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("       Neude 11, 3512AE Utrecht       ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Je krijgt                   Je geeft ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("--------------------------------------");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      ");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
         printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
-        for (int i = 0; i < linesToPrint.Count; i++)
+        //print adres
+        printer.PrintText("----------------------------------------");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("          HKU locatie IBB-laan          ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("       Ina Boudier-bakkerlaan 50        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+        printer.PrintText("            3582 VA, Utrecht            ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("----------------------------------------");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        //Print bestelling info
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText($"          Bestelling No {stateManager.bezoekerID}          ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        if (stateManager.isSelectingOrganisation) 
+        { printer.PrintText("   Jouw ideale creatief professional    "); }
+        else 
+        { printer.PrintText("        Jouw ideale organisatie         "); }
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        //Print selected items
+
+        if (stateManager.isSelectingOrganisation)
         {
-            if(linesToPrint[i].Length > maxCharsPerLine)
+            for (int i = 0; i < contentManager.menuItemsO.Length; i++)
             {
-                Debug.LogWarning($"Line {i}: {linesToPrint[i]} has exceeded the maximum characters per line. Max = {maxCharsPerLine}, LineLength = {linesToPrint[i].Length}");
+                if (contentManager.menuItemsO[i].selected)
+                {
+                    for (int b = 0; b < contentManager.menuItemsO[i].bonContent.Length; b++)
+                    {
+                        printer.PrintText(contentManager.menuItemsO[i].bonContent[b]);
+                        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+                        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+                    }
+                }
             }
-
-            printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-            printer.PrintText(linesToPrint[i]);
-            printerYPos += lineHeight; if(printerYPos > 297f) { printer.NewPage(); printerYPos = 0; } lastModuloYPos = printerYPos % 297f;
+        }
+        else
+        {
+            for (int i = 0; i < contentManager.menuItemsCP.Length; i++)
+            {
+                if (contentManager.menuItemsCP[i].selected)
+                {
+                    for (int b = 0; b < contentManager.menuItemsCP[i].bonContent.Length; b++)
+                    {
+                        printer.PrintText(contentManager.menuItemsCP[i].bonContent[b]);
+                        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+                        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+                    }
+                }
+            }
         }
 
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("--------------------------------------");
-        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-
         //print take home message
-        printer.PrintText("                                      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Het fijne aan de bibliotheek is dat  "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" ze verder niets doen met al deze     "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" data, behalve waar nodig veilig      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" verwerken, geheel volgens de AVG     "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" wet.                                 "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Maar sta nu eens stil bij alle       "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" andere diensten die je gebruikt.     "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Wanneer betaal jij met je data ?     "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Weet jij waar die data naartoe gaat? "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Wat voor waarde creëer jij?          "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Let eens op of je zo'n               "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" datatransactie kan herkennen.        "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" En denk er eens rustig over na.      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText(" Moet je het wel accepteren?          "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("                                      "); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("--------------------------------------"); printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f; printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
-        //Print Bieb Logo
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintTexture(biebLogo, 66f, 19.2f);
-        printerYPos += 19.2f; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
+        for (int i = 0; i < takeHomeMessageLines.Length; i++)
+        {
+            printer.PrintText(takeHomeMessageLines[i]);
+            printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+            printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+        }
 
-        //Print HKU Logo
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintTexture(hkuLogo, 66f, 19.2f);
-        printerYPos += 19.2f; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
-
-        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
-        printer.PrintText("--------------------------------------");
+        //Print Date
+        printer.PrintText("----------------------------------------");
         printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
-        lastModuloYPos = printerYPos % 297f;
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
+        printer.PrintText("---------------28/09/2023---------------");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("----------------------------------------");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        //Print Leon Logo + info
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintTexture(leonLogo, 70f, 17.5f);
+        printerYPos += 17.5f; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("            @leonVoldenborgh            ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("          leonvanoldenborgh.nl          ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("                                        ");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        printer.PrintText("----------------------------------------");
+        printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
+        printer.SetPrintPosition(printerStartPosition.x, printerYPos);
+
+        //Marginbottom
         printer.SetPrintPosition(printerStartPosition.x, printerYPos + marginBottom);
         printer.PrintText("______________________________________");
 

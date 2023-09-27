@@ -5,7 +5,7 @@ using Shapes;
 
 public class AdsManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform parentAdTransform;
+    public RectTransform parentAdTransform;
     [SerializeField] private float[] targetXPositions;
     [SerializeField] private AnimationCurve moveCurve;
     [SerializeField] private AnimationCurve nextHighlightCurve;
@@ -26,14 +26,14 @@ public class AdsManager : MonoBehaviour
             rect.Color = new Color(0, 0, 0, 0);
         }
 
-        SnapToAd(Random.Range(0, 5));
+        SnapToAd(Random.Range(0, 3));
     }
 
     private void Update()
     {
         if (moveTimer <= 0)
         {
-            AnimateToAd((currentlyShownAdID + 1) % 5);
+            AnimateToAd((currentlyShownAdID + 1) % 3);
             moveTimer = displayTime;
         }
         else if (isAnimating)
@@ -56,7 +56,7 @@ public class AdsManager : MonoBehaviour
     {
         float timeValue = 0;
         Vector2 startLocation = parentAdTransform.anchoredPosition;
-        Vector2 targetLocation = new Vector2(targetXPositions[AdID], 0);
+        Vector2 targetLocation = new Vector2(targetXPositions[AdID], parentAdTransform.anchoredPosition.y);
 
         float startOpacityPrev = highlightRects[currentlyShownAdID].Color.a;
         float startOpacityNext = highlightRects[AdID].Color.a;
@@ -110,7 +110,7 @@ public class AdsManager : MonoBehaviour
 
         if (moveRoutine != null) { StopCoroutine(moveRoutine); }
 
-        parentAdTransform.anchoredPosition = new Vector2(targetXPositions[AdID], 0);
+        parentAdTransform.anchoredPosition = new Vector2(targetXPositions[AdID], parentAdTransform.anchoredPosition.y);
 
         moveTimer = displayTime;
         currentlyShownAdID = AdID;

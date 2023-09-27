@@ -9,13 +9,7 @@ using TMPro;
 
 public class StateManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class BezoekerData
-    {
-        public int bezoekerID;
-    }
-
-    public BezoekerData currentBezoekerData;
+    public string bezoekerID;
     [SerializeField] private TextMeshProUGUI bezoekerNoOne;
     [SerializeField] private TextMeshProUGUI bezoekerNoTwo;
 
@@ -27,12 +21,14 @@ public class StateManager : MonoBehaviour
     [SerializeField] private GameObject[] stateParents;
     [SerializeField] private float transitionTime;
 
-    [SerializeField] private ContentManager contentmanager;
+    [SerializeField] private SinglePageContentManager contentManager;
+    [SerializeField] private SinglePageBonnetjeController bonnetjeController;
     [SerializeField] private ThanksManager thanksManager;
     [SerializeField] private PrinterManager printerManager;
 
     private Coroutine transitionRoutine;
     private TransitionManager transitionManager;
+    public bool isSelectingOrganisation;
 
     public enum ExperienceState
     {
@@ -56,10 +52,22 @@ public class StateManager : MonoBehaviour
     private void Start()
     {
         transitionManager = TransitionManager.instance;
-        LoadExperienceSegment((int)startState);
+        //LoadExperienceSegment((int)startState);
 
-        currentBezoekerData = LoadBezoekerData();
+        Color randomColor = new Color(
+            Random.Range(0f, 1f),  // Red
+            Random.Range(0f, 1f),  // Green
+            Random.Range(0f, 1f)   // Blue
+        );
 
+        bezoekerID = ColorToHex(randomColor);
+    }
+
+    private string ColorToHex(Color color)
+    {
+        Color32 color32 = (Color32)color;
+        string returnString = color32.r.ToString("X2") + color32.g.ToString("X2") + color32.b.ToString("X2");
+        return returnString.ToLower();
     }
 
     public void LoadExperienceSegment(int newSegment)
@@ -76,10 +84,8 @@ public class StateManager : MonoBehaviour
                 //transitionManager.Transition(transitionTime);
                 break;
             case ExperienceState.Selection:
-                currentBezoekerData.bezoekerID++;
-                bezoekerNoOne.text = $"N  {currentBezoekerData.bezoekerID.ToString().PadLeft(6, '0')}";
-                bezoekerNoTwo.text = $"N  {currentBezoekerData.bezoekerID.ToString().PadLeft(6, '0')}";
-                SaveBezoekerData(currentBezoekerData);
+                bezoekerNoOne.text = bezoekerID;
+                bezoekerNoTwo.text = bezoekerID;
                 transitionManager.Transition(transitionTime);
                 break;
             case ExperienceState.Thanks:
@@ -97,11 +103,12 @@ public class StateManager : MonoBehaviour
             case ExperienceState.Start:
                 break;
             case ExperienceState.Selection:
-                contentmanager.Init();
+                contentManager.Init();
+                bonnetjeController.Init();
                 break;
             case ExperienceState.Thanks:
                 thanksManager.Init();
-                contentmanager.Print();
+                printerManager.PrintReceipt();
                 break;
             default:
                 break;
@@ -122,8 +129,9 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    public void PressStart()
+    public void PressStart(bool isOrganisation)
     {
+        isSelectingOrganisation = isOrganisation;
         LoadExperienceSegment((int)ExperienceState.Selection);
     }
 
@@ -137,29 +145,29 @@ public class StateManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public BezoekerData LoadBezoekerData()
-    {
-        string filePath = Application.persistentDataPath + "/bezoekerID.json";
+    //public BezoekerData LoadBezoekerData()
+    //{
+    //    string filePath = Application.persistentDataPath + "/bezoekerID.json";
 
-        if (File.Exists(filePath))
-        {
-            string jsonData = File.ReadAllText(filePath);
-            return JsonUtility.FromJson<BezoekerData>(jsonData);
-        }
-        else
-        {
-            BezoekerData newData = new BezoekerData();
-            newData.bezoekerID = 1;
-            SaveBezoekerData(newData);
-            return newData;
-        }
-    }
+    //    if (File.Exists(filePath))
+    //    {
+    //        string jsonData = File.ReadAllText(filePath);
+    //        return JsonUtility.FromJson<BezoekerData>(jsonData);
+    //    }
+    //    else
+    //    {
+    //        BezoekerData newData = new BezoekerData();
+    //        newData.bezoekerID = 1;
+    //        SaveBezoekerData(newData);
+    //        return newData;
+    //    }
+    //}
 
-    public void SaveBezoekerData(BezoekerData data)
-    {
-        string jsonData = JsonUtility.ToJson(data);
-        string filePath = Application.persistentDataPath + "/bezoekerID.json";
-        File.WriteAllText(filePath, jsonData);
-    }
+    //public void SaveBezoekerData(BezoekerData data)
+    //{
+    //    string jsonData = JsonUtility.ToJson(data);
+    //    string filePath = Application.persistentDataPath + "/bezoekerID.json";
+    //    File.WriteAllText(filePath, jsonData);
+    //}
 
 }

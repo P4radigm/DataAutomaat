@@ -1072,7 +1072,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 8f0e43c324b8c5e42a030f83ec083da1, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1330,8 +1330,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 215.39, y: 156}
-  m_SizeDelta: {x: 225.2152, y: 35}
+  m_AnchoredPosition: {x: 268.4, y: 110}
+  m_SizeDelta: {x: 459.4, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &50372937994226785
 CanvasRenderer:
@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Student Bundel
+  m_text: '''Bedrijfstechnische Mastermind'''
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2a39c69a9dbf82147b3c8f9cfd57aec6, type: 2}
   m_sharedMaterial: {fileID: 338522205375405286, guid: 2a39c69a9dbf82147b3c8f9cfd57aec6, type: 2}
@@ -1978,7 +1978,7 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   pivot: 1
-  width: 180
+  width: 262.3
   height: 40
   type: 2
   cornerRadiusMode: 0
@@ -2245,7 +2245,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -32, y: 32}
-  m_SizeDelta: {x: 180, y: 40}
+  m_SizeDelta: {x: 262.3, y: 40}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7265028819834810336
 CanvasRenderer:
@@ -3008,7 +3008,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BEKIJKEN
+  m_text: BUNDEL TOEVOEGEN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6f10d8457a6682049a959550fd1ed8b4, type: 2}
   m_sharedMaterial: {fileID: -8524025335240861929, guid: 6f10d8457a6682049a959550fd1ed8b4, type: 2}

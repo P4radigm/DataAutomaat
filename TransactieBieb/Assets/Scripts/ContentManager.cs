@@ -158,6 +158,6 @@ public class ContentManager : MonoBehaviour
             }
         }
 
-        printerManager.PrintReceipt(allLines);
+        printerManager.PrintReceipt();
     }
 }
