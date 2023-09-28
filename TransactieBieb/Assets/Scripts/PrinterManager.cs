@@ -88,7 +88,7 @@ public class PrinterManager : MonoBehaviour
         printerYPos += lineHeight; if (printerYPos > 297f) { printer.NewPage(); printerYPos = 0; }
         printer.SetPrintPosition(printerStartPosition.x, printerYPos);
 
-        if (stateManager.isSelectingOrganisation) 
+        if (!stateManager.isSelectingOrganisation) 
         { printer.PrintText("   Jouw ideale creatief professional    "); }
         else 
         { printer.PrintText("        Jouw ideale organisatie         "); }
